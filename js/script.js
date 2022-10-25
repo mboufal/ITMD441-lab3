@@ -1,17 +1,61 @@
-document.querySelector('#calculate').onclick = function(){
-  var bill = Number(document.getElementById('amount').value);
-  var tip = document.getElementById('rangeValue').value;
-  document.getElementById('tipOutput').innerHTML = `${tip}%`;
-  var tipValue = bill * (tip/100)
-  var finalBill = bill + tipValue
-  console.log(finalBill)
-  var tipAmount = document.querySelector('#tipAmount')
-  var totalBillWithTip = document.querySelector('#totalBillWithTip')
+const billInput = document.querySelector(".bill-input");
+const peopleInput = document.querySelector(".people-input");
+const tipPerPerson = document.getElementById("tip-amount");
+const totalPerPerson = document.getElementById("total-amount");
+const tips = document.querySelectorAll(".tips");
+const tipCustom = document.querySelector(".tip-custom")
 
-tipAmount.value = tipValue.toFixed(2);
- totalBillWithTip.value =finalBill.toFixed(2);
+billInput.addEventListener("input", billInputFun);
+peopleInput.addEventListener("input", peopleInputFun);
+tips.forEach(function(val){
+  val.addEventListener("click", handleClick);
+});
+tipCusotm.addEventListener("input", tipInputFun);
 
- //Show Results
+billInput.value = "0.0";
+peopleInputValue = "1";
+tipPerPerson.innerHTM = "$" + (0.0).toFixed(2);
+totalPerPerson.innerHTM = "$" + (0.0).toFixed(2);
 
-  document.getElementById('results').style.display='block'
+let billValue = 0.0;
+let peopleValue = 1;
+let tipValue = 0.15;
+
+function billInputFun(){
+	billValue = parseFloat(billInput.value)
+	calculateTip();
+}
+
+function peopleInputFun(){
+	peopleValue = parseFloat(peopleInput.value)
+	calculateTip();
+}
+
+function tipInputFun () {
+	tipValue = parseFloat(tipCustom.value / 100);
+	
+	tips.forEach(function(val){
+		val.classList.remove("active-tip");
+	});
+	calculateTip();
+}
+
+function handleClick(event) {
+  tips.forEach(function(val) {
+	val.classList.remove("active-tip");
+	if (event.target.innerHTML == val.innerHTML) {
+	  val.classList.add("active-tip");
+	  tipValue = parseFloat(val.innerHTML)/100
+		}
+	});	
+	calculateTip()
+}
+
+function calculateTip(){
+	if(peopleValue >=1){
+		let tipAmount = (billValue * tipValue) / peopleValue
+		let total = (billValue * tipAmount) / peopleValue
+		tipPerPerson.innerHTML = "$" + tipAmount.toFixed(2);
+		totalPerPerson.innerHTML = "$" + total.toFixed(2);
+	}
 }
